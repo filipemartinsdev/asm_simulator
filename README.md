@@ -16,7 +16,7 @@ Esse projeto visa implementar em alto nível vários dos comportamentos do ASM, 
 - Instruções DB e RESB;
 
 ### Instruções gerais
-- MOD, ADD, SUB
+- MOV, ADD, SUB
 
 ### Mais
 - Registradores de 32Bits (EAX, EBX, ECX, EDX) e suas respectivas separações (AL, AH, BL, BH...);
