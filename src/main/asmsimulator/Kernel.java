@@ -30,25 +30,49 @@ public final class Kernel {
                 Kernel.Syscall.print();
                 return;
             default:
-                System.out.println("[ERROR] INVALID SYSCALL");
-                System.out.println(eaxValue); // TODO: FIX THIS
-                return;
+                throw new RuntimeException("[ERROR] INVALID SYSCALL");
+//                System.out.println(eaxValue); // TODO: FIX THIS
+//                return;
         }
     }
 
     public static void mov(String destin, String value) {
-
         if (!Kernel.fields.containsKey(destin)) {
-            System.out.println("[ERROR] INVALID DESTIN FIELD");
-            return;
+            throw new RuntimeException("[ERROR] INVALID DESTIN FIELD");
         }
 
-        if (Kernel.fields.get(destin).length < value.length()*2){
+        if (value.startsWith("[") && value.endsWith("]")){
+
+            String valueNoBrackets = Util.removeBrackets(value);
+            byte[] valueBytes = Kernel.fields.get(valueNoBrackets);
+
+            if (Kernel.fields.get(destin).length < valueBytes.length){
+                throw new RuntimeException("[ERROR] SEGMENTATION FAULT (CORE DUMPED)");
+            }
+            else {
+                Kernel.fields.put(
+                        destin, valueBytes
+                );
+            }
+
+        }
+        else {
+            throw new RuntimeException("[ERROR] NOT ALLOWED PASS BY REFERENCE IN MOV");
+        }
+
+    }
+
+    public static void mov(String destin, int value){
+
+        if (!Kernel.fields.containsKey(destin)) {
+            throw new RuntimeException("[ERROR] INVALID DESTIN FIELD");
+        }
+
+        if (Kernel.fields.get(destin).length < value){
             throw new RuntimeException("[ERROR] SEGMENTATION FAULT (CORE DUMPED)");
         }
 
-        Kernel.fields.put(destin, parseCharsToBytes(value.toCharArray()));
-
+        Kernel.fields.put( destin, parseCharsToBytes((value+"").toCharArray()) );
     }
 
     public static void db(String field, String value) {
@@ -70,14 +94,15 @@ public final class Kernel {
     }
 
     public static String readField(String field){
+
         if(!Kernel.fields.containsKey(field)){
-//            System.out.println("[ERROR] INVALID FIELD");
-            throw new RuntimeException("INVALID FIELD");
+            throw new RuntimeException("[ERROR] INVALID FIELD");
         }
         else {
             return String.copyValueOf(Kernel.parseBytesToChars(fields.get(field)));
         }
     }
+
     public static char[] parseBytesToChars(byte[] bytes){
         var charArr = new char[bytes.length/2];
 
