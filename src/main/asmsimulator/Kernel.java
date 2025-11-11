@@ -1,5 +1,6 @@
 package main.asmsimulator;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 // import java.util.List;
@@ -51,16 +52,7 @@ public final class Kernel {
             return;
         }
 
-        // var byteArr = new byte[value.length() * 2];
-        // int i = 0;
-        // for (char c : value.toCharArray()) {
-        //     byteArr[i] = (byte) (c & 127);
-        //     byteArr[++i] = (byte) ((c >> 8) & 127);
-        //     i++;
-        // }
-
         Kernel.fields.put(field, Kernel.parseCharsToBytes(value.toCharArray()));
-
     }
 
     public static void resb(String field, int bytes) {
@@ -72,6 +64,15 @@ public final class Kernel {
         Kernel.fields.put(field, new byte[bytes]);
     }
 
+    public static String readField(String field){
+        if(!Kernel.fields.containsKey(field)){
+//            System.out.println("[ERROR] INVALID FIELD");
+            throw new RuntimeException("INVALID FIELD");
+        }
+        else {
+            return String.copyValueOf(Kernel.parseBytesToChars(fields.get(field)));
+        }
+    }
     public static char[] parseBytesToChars(byte[] bytes){
         var charArr = new char[bytes.length/2];
 
