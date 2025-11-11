@@ -43,7 +43,12 @@ public final class Kernel {
             return;
         }
 
+        if (Kernel.fields.get(destin).length < value.length()*2){
+            throw new RuntimeException("[ERROR] SEGMENTATION FAULT (CORE DUMPED)");
+        }
+
         Kernel.fields.put(destin, parseCharsToBytes(value.toCharArray()));
+
     }
 
     public static void db(String field, String value) {
