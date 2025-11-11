@@ -75,7 +75,7 @@ public final class Kernel {
     public static char[] parseBytesToChars(byte[] bytes){
         var charArr = new char[bytes.length/2];
 
-        for(int i=0; i<charArr.length; i+=2){
+        for(int i=0; i<bytes.length; i+=2){
             charArr[i/2] = (char)(((bytes[i] & 0xFF ) << 8) | (bytes[i+1] & 0xFF));
         }
 
@@ -99,7 +99,7 @@ public final class Kernel {
         public static void print() {
 
             char[] charArr = parseBytesToChars(Kernel.fields.get("ecx"));
-//            System.out.println(charArr.toString());
+            System.out.println(charArr);
         }
 
         public static void read() {
