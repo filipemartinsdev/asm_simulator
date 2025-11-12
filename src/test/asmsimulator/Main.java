@@ -1,14 +1,17 @@
 package test.asmsimulator;
 
 import main.asmsimulator.Kernel;
-import main.asmsimulator.Util;
 
 public class Main {
     public static void main(String[] args) {
         Kernel.mov("eax", 4);
-        System.out.println(Kernel.readField("eax"));
-        Kernel.db("msg", "hi");
-        Kernel.mov("ecx", "hi");
+        Kernel.mov("ebx", 1);
+        Kernel.db("msg", "Hello World\n");
+        Kernel.mov("ecx", "msg");
+        Kernel.call();
+
+        Kernel.db("msg2", "Segundo texto\n");
+        Kernel.mov("ecx", "msg2");
         Kernel.call();
     }
 }

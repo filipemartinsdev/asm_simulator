@@ -9,4 +9,27 @@ public final class Util {
         }
         return newStr;
     }
+
+    public static char[] parseBytesToChars(byte[] bytes){
+        var charArr = new char[bytes.length/2];
+
+        for(int i=0; i<bytes.length; i+=2){
+            charArr[i/2] = (char)(((bytes[i] & 0xFF ) << 8) | (bytes[i+1] & 0xFF));
+        }
+
+        return charArr;
+    }
+
+    public static byte[] parseCharsToBytes(char[] chars){
+        var byteArr = new byte[chars.length * 2];
+        int i = 0;
+
+        for (char c : chars) {
+            byteArr[i+1] = (byte) (c & 0xFF);
+            byteArr[i] = (byte) ((c >> 8) & 0xFF);
+            i+=2;
+        }
+
+        return byteArr;
+    }
 }
